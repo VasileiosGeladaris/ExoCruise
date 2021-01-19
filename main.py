@@ -5,7 +5,7 @@ import googlemaps
 import math
 
 
-class PreviousRoute:
+class Route:
     def __init__(self, origin, dest, directions):
         self.origin = origin
         self.dest = dest
@@ -13,13 +13,12 @@ class PreviousRoute:
 
 
 def cruise_to(address):
-
     # Read file to get all the previous routes
     with open('cache') as cache:
         prev_routes = list()
         for line in cache.readlines():
             args = line[:-1].split(' ')
-            prev_routes.append(PreviousRoute(args[0].split(','), args[1].split(','), args[2]))
+            prev_routes.append(Route(args[0].split(','), args[1].split(','), args[2]))
 
     # Check if the current route is near any previous routes
     pos = geocoder.ip('me')
@@ -30,13 +29,19 @@ def cruise_to(address):
         dest_magnitude = math.sqrt((dest.latitude - float(route.dest[0])) ** 2 + (dest.longitude - float(route.dest[1])) ** 2)
 
         if origin_magnitude <= 0.0003 and dest_magnitude <= 0.0003:
-            print("Found a close route")
-
-    # TODO: Check if near
+            travel_along(route)
+            #return
 
     # If nowhere near
     with open('api_key') as api_key:
-        key = api_key.read().replace('\n', '')
+        apikey = api_key.read()[:-1]
 
+    directions_result = googlemaps.Client(key=apikey).directions(pos.latlng, address, "walking")
+    print(directions_result)
+
+
+def travel_along(route):
+    # TODO: Travel alongside a route
+    return
 
 cruise_to("Smpokou 1 Heraklion Crete Greece")

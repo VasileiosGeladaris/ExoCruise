@@ -1,2 +1,2 @@
-# ExoCruise
-Intuitive routing algorithm for autonomous quadcopters.
+# This algorithm is under development and not yet functional
+### ExoCruise is an intuitive routing algorithm for autonomous quadcopters.
